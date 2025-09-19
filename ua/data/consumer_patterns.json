@@ -1,0 +1,12 @@
+{
+    "abandoned_skus": ["OLJCESPC7Z", "66VCHSJNUP", "L9ECAV7KIM"],
+    "frequent_bundles": [
+      ["1YMWWN1N4O", "L9ECAV7KIM"],
+      ["6E92ZMYYFZ", "9SIQT8TOJO"],
+      ["66VCHSJNUP", "OLJCESPC7Z"]
+    ],
+    "high_margin_items": ["OLJCESPC7Z", "66VCHSJNUP", "1YMWWN1N4O", "L9ECAV7KIM"],
+    "low_moving_items": ["2ZYFJ3GM2N", "LS4PSXUNUM"],
+    "out_of_trend_skus": ["2ZYFJ3GM2N", "66VCHSJNUP"]
+  }
+  

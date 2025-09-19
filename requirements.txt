@@ -1,0 +1,7 @@
+pydantic-ai
+fastapi
+fastmcp
+sqlalchemy
+httpx
+uvicorn
+redis
