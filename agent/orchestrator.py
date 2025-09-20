@@ -2,11 +2,11 @@
 from agent.agent_service import AgentService
 from agent.models import testing_model, fallback_model
 from common.models import LLMProposal
-from agent.redis import set_proposals, get_proposals
+from agent.redis import set_approved_strategy
 
 class Orchestrator:
     def __init__(self):
-        self.model = testing_model
+        self.model = fallback_model
         self.agent_services: list[AgentService] = []
         self.proposals: list[LLMProposal] | None = None
     
@@ -28,11 +28,13 @@ class Orchestrator:
             )
             results.append(proposal)
         self.proposals = results
-        # set_proposals(results)
         return results
     
     def fetch_proposals(self)-> list[LLMProposal] | None:
         return self.proposals
+
+    def clear_proposals(self)-> None:
+        self.proposals = None
 
 
 orchestrator = Orchestrator()

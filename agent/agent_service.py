@@ -1,4 +1,5 @@
 # agent/agent_service.py
+from pydantic import ValidationError
 from pydantic_ai import Agent, PromptedOutput
 from pydantic_ai.models.fallback import FallbackModel
 from pydantic_ai.models.openai import OpenAIChatModel
@@ -15,11 +16,12 @@ class AgentService:
         
         instructions = self.utils.get_instructions()
         tools = [self.utils.get_products, self.utils.get_consumer_patterns, self.utils.get_products_cost]
-        
-        self.agent = Agent(model=self.model,
+
+        self.agent = Agent(model=self.model,       
                       instructions=instructions,
                       output_type=list[str],
-                      tools=tools)
+                      tools=tools,
+                      )
         return self.agent
     
     async def run_agent(self)->list[str]:
@@ -27,5 +29,5 @@ class AgentService:
             self.create_agent()
         prompt = self.utils.create_prompt()
         response = await self.agent.run(prompt)
-        print(response.all_messages)
+
         return response.output

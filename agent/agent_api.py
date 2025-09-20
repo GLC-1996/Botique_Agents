@@ -3,14 +3,14 @@ import uuid
 from fastapi import APIRouter
 from common.models import LLMProposal, ApproveRequest, ApprovedStrategy
 from agent.orchestrator import orchestrator
-from redis import set_approved_strategy
+from agent.redis import set_approved_strategy
 
 router = APIRouter()
 
 @router.post("/activate", response_model=list[LLMProposal])
 async def activate(request: list[str]):
     for i in request:
-        if i not in ["AOV", "CART_RECOVERY", "CLEAR_STOCK"]:
+        if i not in ["AOV", "CART_RECOVERY", "STOCK_CLEARANCE"]:
             raise ValueError(f"Invalid goal: {i}")
     if len(request) == 0:
         raise ValueError("No goals provided")
@@ -36,3 +36,8 @@ def approve_strategy(request: ApproveRequest):
     )
     set_approved_strategy(approved_strategy)
     return approved_strategy
+
+@router.post("/clear_proposals", response_model=None)
+def clear_proposals():
+    orchestrator.clear_proposals()
+    return None

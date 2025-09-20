@@ -6,10 +6,11 @@ import { Button } from "@/components/ui/button"
 
 interface SetGoalsPanelProps {
   onFetch: (goals: Goal[]) => void
+  onClear: () => void
   loading?: boolean
 }
 
-const SetGoalsPanel: React.FC<SetGoalsPanelProps> = ({ onFetch, loading }) => {
+const SetGoalsPanel: React.FC<SetGoalsPanelProps> = ({ onFetch, onClear, loading }) => {
   const [selectedGoals, setSelectedGoals] = useState<Goal[]>([])
 
   const toggleGoal = (goal: Goal) => {
@@ -24,7 +25,7 @@ const SetGoalsPanel: React.FC<SetGoalsPanelProps> = ({ onFetch, loading }) => {
         <CardTitle className="text-lg">Set Goals</CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
-        {(["AOV", "CART_RECOVERY", "CLEAR_STOCK"] as Goal[]).map((goal) => (
+        {(["AOV", "CART_RECOVERY", "STOCK_CLEARANCE"] as Goal[]).map((goal) => (
           <label
             key={goal}
             className="flex items-center gap-2 cursor-pointer hover:text-primary"
@@ -38,12 +39,11 @@ const SetGoalsPanel: React.FC<SetGoalsPanelProps> = ({ onFetch, loading }) => {
             <span className="text-sm">{goal}</span>
           </label>
         ))}
-        <Button
-          className="mt-4 w-full"
-          onClick={() => onFetch(selectedGoals)}
-          disabled={loading}
-        >
+        <Button className="mt-4 w-full" onClick={() => onFetch(selectedGoals)} disabled={loading}>
           {loading ? "Fetching..." : "Fetch"}
+        </Button>
+        <Button variant="destructive" className="mt-2 w-full" onClick={onClear}>
+          Clear Proposals
         </Button>
       </CardContent>
     </Card>

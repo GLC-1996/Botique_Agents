@@ -10,6 +10,7 @@ function App() {
   const [proposals, setProposals] = useState<LLMProposal[]>([]);
   const [activeProposal, setActiveProposal] = useState<LLMProposal | null>(null);
   const [loading, setLoading] = useState(false);
+  const [fetchedGoals, setFetchedGoals] = useState<Goal[]>([]);
 
   const normalizeProposals = (raw: any[]): LLMProposal[] =>
     raw.map((p) => ({
@@ -20,30 +21,25 @@ function App() {
   const handleFetch = async (goals: Goal[]) => {
     setLoading(true);
     try {
-      // Step 1: Try fetching proposals
-      const fetchRes = await fetch("http://localhost:8001/agent/fetch_proposals", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
+      const newGoals = goals.filter((g) => !fetchedGoals.includes(g));
 
-      if (!fetchRes.ok) throw new Error("Failed to fetch proposals");
-      const data = await fetchRes.json();
-
-      if (data && Array.isArray(data)) {
-        setProposals(normalizeProposals(data));
+      if (newGoals.length === 0) {
+        console.log("No new goals to fetch, using cached results");
         return;
       }
 
-      // Step 2: If no proposals, activate with goals
       const activateRes = await fetch("http://localhost:8001/agent/activate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(goals),
+        body: JSON.stringify(newGoals),
       });
 
       if (!activateRes.ok) throw new Error("Failed to activate agents");
       const activated = await activateRes.json();
-      setProposals(normalizeProposals(activated));
+      const newProposals = normalizeProposals(activated);
+
+      setProposals((prev) => [...prev, ...newProposals]);
+      setFetchedGoals((prev) => [...prev, ...newGoals]);
     } catch (err) {
       console.error("Error fetching proposals:", err);
     } finally {
@@ -104,11 +100,24 @@ function App() {
     }
   };
 
+  const handleClear = async () => {
+    try {
+      await fetch("http://localhost:8001/agent/clear_proposals", {
+        method: "POST",
+      });
+    } catch (err) {
+      console.error("Backend clear failed:", err);
+    }
+    setProposals([]);
+    setActiveProposal(null);
+    setFetchedGoals([]);
+  };
+
   return (
     <div className="flex min-h-screen w-screen bg-background text-foreground">
       {/* Left edge */}
       <div className="w-1/4 p-6 border-r">
-        <SetGoalsPanel onFetch={handleFetch} loading={loading} />
+        <SetGoalsPanel onFetch={handleFetch} onClear={handleClear} loading={loading} />
       </div>
 
       {/* Center */}

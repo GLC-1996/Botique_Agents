@@ -1,6 +1,6 @@
 // src/types.ts
 
-export type Goal = "AOV" | "CART_RECOVERY" | "CLEAR_STOCK";
+export type Goal = "AOV" | "CART_RECOVERY" | "STOCK_CLEARANCE";
 
 export interface Strategy {
   text: string

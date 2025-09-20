@@ -1,40 +1,25 @@
 from pathlib import Path
 
+def segregation_instructions() -> str:
+    return """
+    Your are a part of a small online boutique's strategy team.
+    You are given a specific strategy text.
+    Your job is to identify whether the strategy is related to cart value.
 
-def get_instructions(goal: str)->str:
-    base_instr = """
-        You are part of a small online boutique's strategy team.
-        Your task is to propose high-level product promotions strategies on the goal mentioned below.
-        - You report to the manager
-        - Your strategies should be general, so they can later be turned into specific offers using product and customer data.
-        - Provide 3 to 5 clear, practical strategies with strategy text for each strategy. Each strategy should be a single sentence.
-        - You may use the available tools (products, consumer patterns, costs) if needed.
-        - Just return the strategies, no other text.
+    if the strategy is related to cart value, return 'True', otherwise return 'False'.
 
-        Example strategies:
-        - Offer 5 percent discount if cart value > $50 and 10 percent if > $100.
-        - Bundle similar products with a small discount.
-        - Free shipping above $80.
-        - Buy 2, get 20 percent off.
+    Output requirements:
+    - Return only 1 word: True or False
+    - Do not include explanations, punctuations, characters or extra words.
 
-        Output Example:
-        ["Offer free shipping for orders above $50","Bundle similar products with a small discount","Free shipping above $80"]
-        """
-    instructions = {
-            "AOV": f"""Your Goal: generate strategies to increase the Average Order Value (AOV). Return a list of strategy texts.
-            {base_instr}
-            """,
-            "CART_RECOVERY": f"""{base_instr}
+    examples:
+    Prompt: "Offer 5 percent discount if cart value is above $50"
+    Response: True
 
-            Your Goal: generate strategies to encourage cart recovery (reduce cart abandonment). Return a list of strategy texts.
-            """,
-            "CLEAR_STOCK": f"""{base_instr}
+    Prompt: "Offer free shipping for all orders above $50"
+    Response: False
+    """
 
-            Your Goal: generate strategies to clear excess stock efficiently. Return a list of strategy texts.
-            """
-    }
-
-    return instructions[goal]
     
 def create_prompt(goal: str)->str:
     return f"""Give me strategies for {goal}. Use the available tools if needed."""
@@ -50,3 +35,33 @@ def get_consumer_patterns()->str:
 def get_products_cost()->str:
     file_path = Path(__file__).parent / "data" / "products_cost.json"
     return file_path.read_text()
+
+def generic_offer_instructions()->str:
+    return f"""
+    You are part of a small online boutique's strategy team.
+    You are given a specific strategy text.
+    Your job is to create a specific offer for the strategy.
+    You have the following tools available to you:
+    - get_products: to get the list of products
+    - get_consumer_patterns: to get the list of consumer patterns
+    - get_products_cost: to get the cost of the products
+
+    Your task:
+    generate 3-5 specific offers based on the data you have which align with the given strategy.
+    Each offer should be a single sentence.
+    The offers should contain atleast one product from the list of products.
+    Use product id to identify the product. Do not use product name.
+    The offers should be in a format that can be easily understood by the user.
+
+    Output requirements:
+    - Return ONLY a list of strings.
+    - Do not include explanations, punctuation, or extra words.
+    - It should only contain the offers.
+
+    Examples:
+    Prompt: "Bundle similar products with a small discount"
+    Response: ["Buy OLJCESPC7Z and 1YMWWN1N4O for 10% off", "Buy 66VCHSJNUP and L9ECAV7KIM for 15% off"]
+
+    Your goal:
+    generate 3-5 specific offers and return a list of strings.
+    """

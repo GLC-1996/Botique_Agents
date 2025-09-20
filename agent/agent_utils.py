@@ -26,21 +26,22 @@ class AgentUtils:
         ["Offer free shipping for orders above $50","Bundle similar products with a small discount","Free shipping above $80"]
         """
         instructions = {
-            "AOV": f"""Your Goal: generate strategies to increase the Average Order Value (AOV). Return a list of strategy texts.
-            {base_instr}
+            "AOV": f"""{base_instr}
+
+            Your Goal: generate strategies to increase the Average Order Value (AOV). Return a list of strategy texts.
             """,
             "CART_RECOVERY": f"""{base_instr}
 
             Your Goal: generate strategies to encourage cart recovery (reduce cart abandonment). Return a list of strategy texts.
             """,
-            "CLEAR_STOCK": f"""{base_instr}
+            "STOCK_CLEARANCE": f"""{base_instr}
 
             Your Goal: generate strategies to clear excess stock efficiently. Return a list of strategy texts.
             """,
         }
 
         return instructions[self.goal]
-    
+
     def create_prompt(self)->str:
         return f"""Give me strategies for {self.goal}. Use the available tools if needed."""
 
