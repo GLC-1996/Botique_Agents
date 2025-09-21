@@ -1,67 +1,49 @@
 {
-    "products_costs": [
+    "products_details": [
         {
             "id": "OLJCESPC7Z",
             "name": "Sunglasses",
-            "retail_price_usd": 19.99,
-            "cost_usd": 8.00,
-            "gross_margin_pct": 60
+            "retail_price_usd": 19.99
         },
         {
             "id": "66VCHSJNUP",
             "name": "Tank Top",
-            "retail_price_usd": 18.99,
-            "cost_usd": 8.00,
-            "gross_margin_pct": 58
+            "retail_price_usd": 18.99
         },
         {
             "id": "1YMWWN1N4O",
             "name": "Watch",
-            "retail_price_usd": 109.99,
-            "cost_usd": 38.50,
-            "gross_margin_pct": 65
+            "retail_price_usd": 109.99
         },
         {
             "id": "L9ECAV7KIM",
             "name": "Loafers",
-            "retail_price_usd": 89.99,
-            "cost_usd": 40.50,
-            "gross_margin_pct": 55
+            "retail_price_usd": 89.99
         },
         {
             "id": "2ZYFJ3GM2N",
             "name": "Hairdryer",
-            "retail_price_usd": 24.99,
-            "cost_usd": 13.75,
-            "gross_margin_pct": 45
+            "retail_price_usd": 24.99
         },
         {
             "id": "0PUK6V6EV0",
             "name": "Candle Holder",
-            "retail_price_usd": 18.99,
-            "cost_usd": 9.50,
-            "gross_margin_pct": 50
+            "retail_price_usd": 18.99
         },
         {
             "id": "LS4PSXUNUM",
             "name": "Salt & Pepper Shakers",
-            "retail_price_usd": 18.49,
-            "cost_usd": 10.15,
-            "gross_margin_pct": 45
+            "retail_price_usd": 18.49
         },
         {
             "id": "9SIQT8TOJO",
             "name": "Bamboo Glass Jar",
-            "retail_price_usd": 5.49,
-            "cost_usd": 2.75,
-            "gross_margin_pct": 50
+            "retail_price_usd": 5.49
         },
         {
             "id": "6E92ZMYYFZ",
             "name": "Mug",
-            "retail_price_usd": 8.99,
-            "cost_usd": 4.50,
-            "gross_margin_pct": 50
+            "retail_price_usd": 8.99
         }
     ]
     }

@@ -3,7 +3,7 @@ from ua.models import fallback_model, testing_model
 from ua.utils import segregation_instructions
 from pydantic import BaseModel, ValidationError
 from typing import Literal
-from agent.redis import get_all_strategy_ids, get_approved_strategy, set_categorized_strategies
+from agent.redis import get_all_strategy_ids, get_approved_strategy, set_categorized_strategies, set_current_run_id
 from common.models import CategorizedStrategies
 import uuid
 
@@ -48,6 +48,7 @@ class Cat:
         )
 
         set_categorized_strategies(run_id, categorized_strategies)
+        set_current_run_id(run_id)
 
         return run_id
     
@@ -65,6 +66,7 @@ class Cat:
             generic_strategies=generic_strategies
         )
         set_categorized_strategies(run_id, categorized_strategies)
+        set_current_run_id(run_id)
         return run_id
     
 cat = Cat()

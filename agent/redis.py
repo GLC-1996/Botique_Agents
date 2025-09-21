@@ -56,3 +56,12 @@ def delete_all_categorized_strategies():
     keys = redis_client.keys("run_id:*")
     if keys:
         redis_client.delete(*keys)
+
+def set_current_run_id(run_id: str):
+    redis_client.set("current_run_id", run_id)
+
+def get_current_run_id() -> str | None:
+    run_id = redis_client.get("current_run_id")
+    if run_id:
+        return run_id
+    return None

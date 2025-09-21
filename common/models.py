@@ -86,3 +86,14 @@ class ApprovedStrategy(BaseModel):
 class CategorizedStrategies(BaseModel):
     cart_related_strategies: list[str]
     generic_strategies: list[str]
+
+# ---------- Cart models ----------
+
+class CartItem(BaseModel):
+    product_id: str
+    quantity: int
+
+class Cart(BaseModel):
+    user_id: str
+    items: list[CartItem]
+

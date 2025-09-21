@@ -3,7 +3,7 @@ from ua.utils import get_products, get_consumer_patterns, get_products_cost, gen
 from ua.models import fallback_model, testing_model
 from pydantic import BaseModel
 
-class UAService:
+class GenericService:
     def __init__(self):
         self.model = testing_model
     
@@ -19,4 +19,4 @@ class UAService:
         return result.output
 
             
-ua_service = UAService()
+generic_service = GenericService()
