@@ -2,7 +2,7 @@
 from common.models import Cart, CategorizedStrategies, CartItem
 from pydantic_ai import Agent
 from agent.models import fallback_model, testing_model
-from agent.redis import get_current_run_id, get_categorized_strategies
+from common.redis import get_current_run_id, get_categorized_strategies
 from pathlib import Path
 import json
 

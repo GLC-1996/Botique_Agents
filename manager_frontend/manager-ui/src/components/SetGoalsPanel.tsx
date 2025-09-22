@@ -1,23 +1,33 @@
 // src/components/SetGoalsPanel.tsx
-import React, { useState } from "react"
-import type { Goal } from "../types"
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import React, { useState } from "react";
+import type { Goal } from "../types";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 interface SetGoalsPanelProps {
-  onFetch: (goals: Goal[]) => void
-  onClear: () => void
-  loading?: boolean
+  onFetch: (goals: Goal[]) => void;
+  onClear: () => void;
+  onStartCampaign: () => void;
+  onShowLiveMessages: () => void;
+  loading?: boolean;
+  hasApproved: boolean;
 }
 
-const SetGoalsPanel: React.FC<SetGoalsPanelProps> = ({ onFetch, onClear, loading }) => {
-  const [selectedGoals, setSelectedGoals] = useState<Goal[]>([])
+const SetGoalsPanel: React.FC<SetGoalsPanelProps> = ({
+  onFetch,
+  onClear,
+  onStartCampaign,
+  onShowLiveMessages,
+  loading,
+  hasApproved,
+}) => {
+  const [selectedGoals, setSelectedGoals] = useState<Goal[]>([]);
 
   const toggleGoal = (goal: Goal) => {
     setSelectedGoals((prev) =>
       prev.includes(goal) ? prev.filter((g) => g !== goal) : [...prev, goal]
-    )
-  }
+    );
+  };
 
   return (
     <Card className="rounded-xl border bg-white/60 backdrop-blur-md shadow-md">
@@ -25,7 +35,7 @@ const SetGoalsPanel: React.FC<SetGoalsPanelProps> = ({ onFetch, onClear, loading
         <CardTitle className="text-lg">Set Goals</CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
-        {(["AOV", "CART_RECOVERY", "STOCK_CLEARANCE"] as Goal[]).map((goal) => (
+        {(["AOV", "CART_RECOVERY", "CLEAR_STOCK"] as Goal[]).map((goal) => (
           <label
             key={goal}
             className="flex items-center gap-2 cursor-pointer hover:text-primary"
@@ -39,15 +49,40 @@ const SetGoalsPanel: React.FC<SetGoalsPanelProps> = ({ onFetch, onClear, loading
             <span className="text-sm">{goal}</span>
           </label>
         ))}
-        <Button className="mt-4 w-full" onClick={() => onFetch(selectedGoals)} disabled={loading}>
+
+        <Button
+          className="mt-4 w-full"
+          onClick={() => onFetch(selectedGoals)}
+          disabled={loading}
+        >
           {loading ? "Fetching..." : "Fetch"}
         </Button>
-        <Button variant="destructive" className="mt-2 w-full" onClick={onClear}>
+
+        <Button
+          variant="destructive"
+          className="mt-2 w-full"
+          onClick={onClear}
+        >
           Clear Proposals
+        </Button>
+
+        <Button
+          className="mt-2 w-full"
+          onClick={onStartCampaign}
+          disabled={!hasApproved}
+        >
+          Start Campaign
+        </Button>
+
+        <Button
+          className="mt-2 w-full"
+          onClick={onShowLiveMessages}
+        >
+          Live Messages
         </Button>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
-export default SetGoalsPanel
+export default SetGoalsPanel;

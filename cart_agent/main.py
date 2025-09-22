@@ -1,8 +1,10 @@
 #cart-agent/main.py
-from fastapi import FastAPI, asynccontextmanager
-import cart_poller
-import cart_service
+from fastapi import FastAPI
+from contextlib import asynccontextmanager
+import cart_agent.cart_poller as cart_poller
+import cart_agent.cart_service as cart_service
 from common.models import Cart, CartItem
+import uvicorn
 
 
 @asynccontextmanager
@@ -41,3 +43,17 @@ app = FastAPI(
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
+@app.get("/cart/message")
+async def get_cart_message():
+    return {"message": app.state.latest_message}
+
+
+
+if __name__ == "__main__":
+    uvicorn.run(
+        "cart_agent.main:app",
+        host="0.0.0.0",
+        port=8003,
+        reload=True
+    )

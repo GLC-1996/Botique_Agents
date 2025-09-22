@@ -4,7 +4,7 @@ from ua.cat import cat
 
 router = APIRouter()
 
-@router.get("/categorize-strategies")
+@router.post("/start-campaign")
 async def categorize_strategies():
     strategies = cat.get_strategies()
     

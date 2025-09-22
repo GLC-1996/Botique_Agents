@@ -1,10 +1,10 @@
 from pathlib import Path
 
-def segregation_instructions() -> str:
+def categorization_instructions() -> str:
     return """
     Your are a part of a small online boutique's strategy team.
     You are given a specific strategy text.
-    Your job is to identify whether the strategy is related to cart value.
+    Your job is to identify whether the strategy is related to cart value or not.
 
     if the strategy is related to cart value, return 'True', otherwise return 'False'.
 

@@ -3,9 +3,8 @@ import os
 import grpc
 import asyncio
 from common.models import Cart, CartItem
-import cart_pb2
-import cart_pb2_grpc
-from cart_service import get_offers
+import cart_agent.cart_pb2 as cart_pb2
+import cart_agent.cart_pb2_grpc as cart_pb2_grpc
 
 #---------- Config ----------
 CART_SERVICE_ADDRESS = os.getenv("CART_SERVICE_ADDRESS","cartservice:7070")

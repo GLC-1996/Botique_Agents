@@ -1,9 +1,9 @@
 from pydantic_ai import Agent
 from ua.models import fallback_model, testing_model
-from ua.utils import segregation_instructions
+from ua.utils import categorization_instructions
 from pydantic import BaseModel, ValidationError
 from typing import Literal
-from agent.redis import get_all_strategy_ids, get_approved_strategy, set_categorized_strategies, set_current_run_id
+from common.redis import get_all_strategy_ids, get_approved_strategy, set_categorized_strategies, set_current_run_id
 from common.models import CategorizedStrategies
 import uuid
 
@@ -13,7 +13,7 @@ class BoolOutput(BaseModel):
 class Cat:
     def __init__(self):
         self.model = testing_model
-        self.instructions = segregation_instructions()
+        self.instructions = categorization_instructions()
         self.agent = Agent(model=self.model, instructions=self.instructions)
 
     def get_strategies(self)->list[str]:

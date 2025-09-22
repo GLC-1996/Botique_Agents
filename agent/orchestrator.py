@@ -2,7 +2,7 @@
 from agent.agent_service import AgentService
 from agent.models import testing_model, fallback_model
 from common.models import LLMProposal
-from agent.redis import set_approved_strategy
+from common.redis import set_approved_strategy
 
 class Orchestrator:
     def __init__(self):

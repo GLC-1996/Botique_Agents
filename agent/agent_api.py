@@ -3,7 +3,7 @@ import uuid
 from fastapi import APIRouter
 from common.models import LLMProposal, ApproveRequest, ApprovedStrategy
 from agent.orchestrator import orchestrator
-from agent.redis import set_approved_strategy
+from common.redis import set_approved_strategy
 
 router = APIRouter()
 
