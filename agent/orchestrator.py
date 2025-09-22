@@ -1,6 +1,6 @@
 # agent/orchestrator.py
 from agent.agent_service import AgentService
-from agent.models import testing_model, fallback_model
+from agent.models import fallback_model
 from common.models import LLMProposal
 from common.redis import set_approved_strategy
 

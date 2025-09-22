@@ -1,5 +1,5 @@
 from pydantic_ai import Agent
-from ua.models import fallback_model, testing_model
+from ua.models import fallback_model
 from ua.utils import categorization_instructions
 from pydantic import BaseModel, ValidationError
 from typing import Literal
@@ -12,7 +12,7 @@ class BoolOutput(BaseModel):
 
 class Cat:
     def __init__(self):
-        self.model = testing_model
+        self.model = fallback_model
         self.instructions = categorization_instructions()
         self.agent = Agent(model=self.model, instructions=self.instructions)
 

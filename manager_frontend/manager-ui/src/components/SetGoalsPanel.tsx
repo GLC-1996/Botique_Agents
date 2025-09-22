@@ -8,7 +8,6 @@ interface SetGoalsPanelProps {
   onFetch: (goals: Goal[]) => void;
   onClear: () => void;
   onStartCampaign: () => void;
-  onShowLiveMessages: () => void;
   loading?: boolean;
   hasApproved: boolean;
 }
@@ -17,7 +16,6 @@ const SetGoalsPanel: React.FC<SetGoalsPanelProps> = ({
   onFetch,
   onClear,
   onStartCampaign,
-  onShowLiveMessages,
   loading,
   hasApproved,
 }) => {
@@ -51,7 +49,7 @@ const SetGoalsPanel: React.FC<SetGoalsPanelProps> = ({
         ))}
 
         <Button
-          className="mt-4 w-full"
+          className="mt-4 w-full rounded-lg"
           onClick={() => onFetch(selectedGoals)}
           disabled={loading}
         >
@@ -60,25 +58,18 @@ const SetGoalsPanel: React.FC<SetGoalsPanelProps> = ({
 
         <Button
           variant="destructive"
-          className="mt-2 w-full"
+          className="mt-2 w-full rounded-lg"
           onClick={onClear}
         >
           Clear Proposals
         </Button>
 
         <Button
-          className="mt-2 w-full"
+          className="mt-2 w-full rounded-lg"
           onClick={onStartCampaign}
           disabled={!hasApproved}
         >
           Start Campaign
-        </Button>
-
-        <Button
-          className="mt-2 w-full"
-          onClick={onShowLiveMessages}
-        >
-          Live Messages
         </Button>
       </CardContent>
     </Card>

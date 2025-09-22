@@ -1,0 +1,6 @@
+fastapi
+pydantic
+pydantic_ai
+python-dotenv
+uvicorn
+redis

@@ -1,0 +1,146 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-botique
+spec:
+  selector:
+    matchLabels:
+      app: redis-botique
+  template:
+    metadata:
+      labels:
+        app: redis-botique
+    spec:
+      containers:
+      - name: redis
+        image: redis:7-alpine
+        ports:
+        - containerPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-botique
+spec:
+  type: ClusterIP
+  selector:
+    app: redis-botique
+  ports:
+  - port: 6379
+    targetPort: 6379
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: agent
+  template:
+    metadata:
+      labels:
+        app: agent
+    spec:
+      containers:
+      - name: agent
+        image: us-central1-docker.pkg.dev/lofty-equinox-472907-s5/dj-botique-repo/agent:final
+        ports:
+        - containerPort: 8000
+        env:
+        - name: REDIS_HOST
+          value: "redis-botique"
+        - name: REDIS_PORT
+          value: "6379"
+        - name: GEMINI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: gemini-api-secret
+              key: GEMINI_API_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agent
+spec:
+  type: ClusterIP
+  selector:
+    app: agent
+  ports:
+  - port: 8001
+    targetPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ua
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ua
+  template:
+    metadata:
+      labels:
+        app: ua
+    spec:
+      containers:
+      - name: ua
+        image: us-central1-docker.pkg.dev/lofty-equinox-472907-s5/dj-botique-repo/ua:final
+        ports:
+        - containerPort: 8000
+        env:
+        - name: REDIS_HOST
+          value: "redis-botique"
+        - name: REDIS_PORT
+          value: "6379"
+        - name: GEMINI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: gemini-api-secret
+              key: GEMINI_API_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ua
+spec:
+  type: ClusterIP
+  selector:
+    app: ua
+  ports:
+  - port: 8002
+    targetPort: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: manager-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: manager-ui
+  template:
+    metadata:
+      labels:
+        app: manager-ui
+    spec:
+      containers:
+      - name: manager-ui
+        image: us-central1-docker.pkg.dev/lofty-equinox-472907-s5/dj-botique-repo/manager-ui:final
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: manager-ui
+spec:
+  type: LoadBalancer
+  selector:
+    app: manager-ui
+  ports:
+  - port: 80
+    targetPort: 80

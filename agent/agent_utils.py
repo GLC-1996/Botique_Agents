@@ -13,7 +13,8 @@ class AgentUtils:
         - You report to the manager
         - Your strategies should be general, so they can later be turned into specific offers using product and customer data.
         - Provide 3 to 5 clear, practical strategies with strategy text for each strategy. Each strategy should be a single sentence.
-        - You may use the available tools (products, consumer patterns, costs) if needed.
+        - You may use the available tools (products_details, consumer patterns) if needed.
+        - Strategies should be limited to discounts, free shipping and bundle deals.
         - Just return the strategies, no other text.
 
         Example strategies:
@@ -32,7 +33,7 @@ class AgentUtils:
             """,
             "CART_RECOVERY": f"""{base_instr}
 
-            Your Goal: generate strategies to encourage cart recovery (reduce cart abandonment). Return a list of strategy texts.
+            Your Goal: generate strategies to encourage cart recovery (reduce cart abandonment). Strategies text should include the word "cart value". Return a list of strategy texts.
             """,
             "STOCK_CLEARANCE": f"""{base_instr}
 
@@ -44,15 +45,11 @@ class AgentUtils:
 
     def create_prompt(self)->str:
         return f"""Give me strategies for {self.goal}. Use the available tools if needed."""
-
-    def get_products(self)->str:
-        file_path = Path(__file__).parent / "data" / "products.json"
-        return file_path.read_text()
     
     def get_consumer_patterns(self)->str:
         file_path = Path(__file__).parent / "data" / "consumer_patterns.json"
         return file_path.read_text()
     
-    def get_products_cost(self)->str:
-        file_path = Path(__file__).parent / "data" / "products_cost.json"
+    def get_products_details(self)->str:
+        file_path = Path(__file__).parent / "data" / "products_details.json"
         return file_path.read_text()

@@ -15,7 +15,7 @@ class AgentService:
     def create_agent(self)->Agent:
         
         instructions = self.utils.get_instructions()
-        tools = [self.utils.get_products, self.utils.get_consumer_patterns, self.utils.get_products_cost]
+        tools = [self.utils.get_consumer_patterns, self.utils.get_products_details]
 
         self.agent = Agent(model=self.model,       
                       instructions=instructions,

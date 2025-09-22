@@ -1,5 +1,5 @@
 // src/App.tsx
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import SetGoalsPanel from "./components/SetGoalsPanel";
 import ProposalsList from "./components/ProposalsList";
 import ProposalDetails from "./components/ProposalDetails";
@@ -12,8 +12,6 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [fetchedGoals, setFetchedGoals] = useState<Goal[]>([]);
   const [campaignMessage, setCampaignMessage] = useState<string | null>(null);
-  const [showLiveMessages, setShowLiveMessages] = useState(false);
-  const [liveMessages, setLiveMessages] = useState<string[]>([]);
 
   const normalizeProposals = (raw: any[]): LLMProposal[] =>
     raw.map((p) => ({
@@ -31,7 +29,7 @@ function App() {
         return;
       }
 
-      const activateRes = await fetch("http://localhost:8001/agent/activate", {
+      const activateRes = await fetch("/agent/agent/activate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newGoals),
@@ -60,7 +58,7 @@ function App() {
     if (!strategy) return;
 
     try {
-      const res = await fetch("http://localhost:8001/agent/approve_strategy", {
+      const res = await fetch("/agent/agent/approve_strategy", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ goal, strategy_text: strategy.text }),
@@ -105,7 +103,7 @@ function App() {
 
   const handleClear = async () => {
     try {
-      await fetch("http://localhost:8001/agent/clear_proposals", {
+      await fetch("/agent/agent/clear_proposals", {
         method: "POST",
       });
     } catch (err) {
@@ -118,7 +116,7 @@ function App() {
 
   const handleStartCampaign = async () => {
     try {
-      const res = await fetch("http://localhost:8002/ua/start-campaign", {
+      const res = await fetch("/ua/ua/start-campaign", {
         method: "POST",
       });
       if (!res.ok) throw new Error("Failed to start campaign");
@@ -128,29 +126,6 @@ function App() {
       setCampaignMessage("Failed to start campaign ❌");
     }
   };
-
-  // Poll live messages if section is visible
-  useEffect(() => {
-    if (!showLiveMessages) return;
-
-    const interval = setInterval(async () => {
-      try {
-        const res = await fetch("http://localhost:8003/cart/message");
-        if (!res.ok) return;
-        const data = await res.json();
-        if (data.message) {
-          setLiveMessages((prev) => {
-            if (prev.includes(data.message)) return prev;
-            return [...prev, data.message];
-          });
-        }
-      } catch (err) {
-        console.error("Error fetching live message:", err);
-      }
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [showLiveMessages]);
 
   // At least one approved?
   const hasApproved = proposals.some((p) =>
@@ -172,7 +147,6 @@ function App() {
             onFetch={handleFetch}
             onClear={handleClear}
             onStartCampaign={handleStartCampaign}
-            onShowLiveMessages={() => setShowLiveMessages(true)}
             loading={loading}
             hasApproved={hasApproved}
           />
@@ -185,23 +159,6 @@ function App() {
         <div className="flex-1 p-6 flex flex-col gap-6">
           <ProposalsList proposals={proposals} onSelect={handleSelect} />
           <ProposalDetails proposal={activeProposal} onApprove={handleApprove} />
-  
-          {showLiveMessages && (
-            <div className="mt-6 p-4 border rounded-lg bg-white/50 backdrop-blur-md shadow-md">
-              <h3 className="font-bold mb-2">Live Messages</h3>
-              {liveMessages.length === 0 ? (
-                <p className="text-sm text-muted-foreground">
-                  No messages yet...
-                </p>
-              ) : (
-                <ul className="list-disc pl-6 space-y-1">
-                  {liveMessages.map((msg, i) => (
-                    <li key={i}>{msg}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}
         </div>
   
         {/* Right edge */}
@@ -211,7 +168,6 @@ function App() {
       </div>
     </div>
   );
-  
 }
 
 export default App;

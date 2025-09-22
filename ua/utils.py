@@ -23,17 +23,13 @@ def categorization_instructions() -> str:
     
 def create_prompt(goal: str)->str:
     return f"""Give me strategies for {goal}. Use the available tools if needed."""
-
-def get_products()->str:
-    file_path = Path(__file__).parent / "data" / "products.json"
-    return file_path.read_text()
     
 def get_consumer_patterns()->str:
     file_path = Path(__file__).parent / "data" / "consumer_patterns.json"
     return file_path.read_text()
     
-def get_products_cost()->str:
-    file_path = Path(__file__).parent / "data" / "products_cost.json"
+def get_products_details()->str:
+    file_path = Path(__file__).parent / "data" / "products_details.json"
     return file_path.read_text()
 
 def generic_offer_instructions()->str:
@@ -42,9 +38,8 @@ def generic_offer_instructions()->str:
     You are given a specific strategy text.
     Your job is to create a specific offer for the strategy.
     You have the following tools available to you:
-    - get_products: to get the list of products
     - get_consumer_patterns: to get the list of consumer patterns
-    - get_products_cost: to get the cost of the products
+    - get_products_details: to get the details of the products
 
     Your task:
     generate 3-5 specific offers based on the data you have which align with the given strategy.
